@@ -1,24 +1,31 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './components/Home';
-import Login from './components/Login';
-import Register from './components/Register';
 import Dashboard from './components/Dashboard';
+import Login from './components/Login';
+import ManageCourses from './components/ManageCourses';
+import ManageUsers from './components/ManageUsers';
 import CreateCourse from './components/CreateCourse';
+import ViewStudents from './components/ViewStudents';
+import MyCourses from './components/MyCourses';
+import TrackProgress from './components/TrackProgress';
 
-function App() {
+const App = () => {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/manage-courses" element={<ManageCourses />} />
+        <Route path="/manage-users" element={<ManageUsers />} />
         <Route path="/create-course" element={<CreateCourse />} />
+        <Route path="/view-students" element={<ViewStudents />} />
+        <Route path="/my-courses" element={<MyCourses />} />
+        <Route path="/track-progress" element={<TrackProgress />} />
       </Routes>
     </Router>
   );
-}
+};
 
 export default App;

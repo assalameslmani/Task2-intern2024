@@ -4,17 +4,19 @@ import { firestore } from '../firebase';
 const CreateCourse = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [syllabus, setSyllabus] = useState('');
 
-  const handleCreateCourse = async (e) => {
-    e.preventDefault();
+  const handleCreateCourse = async () => {
     try {
       await firestore.collection('courses').add({
         title,
         description,
-        // Add more fields as needed
+        syllabus,
       });
       setTitle('');
       setDescription('');
+      setSyllabus('');
+      alert('Course created successfully!');
     } catch (error) {
       console.error('Error creating course:', error);
     }
@@ -22,24 +24,29 @@ const CreateCourse = () => {
 
   return (
     <div>
-      <h1>Create a New Course</h1>
-      <form onSubmit={handleCreateCourse}>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Course Title"
-        />
-        <textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          placeholder="Course Description"
-        ></textarea>
-        <button type="submit">Create Course</button>
-      </form>
+      <h1>Create Course</h1>
+      <input
+        type="text"
+        placeholder="Course Title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Course Description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+      />
+      <textarea
+        placeholder="Course Syllabus"
+        value={syllabus}
+        onChange={(e) => setSyllabus(e.target.value)}
+      />
+      <button onClick={handleCreateCourse}>Create Course</button>
     </div>
   );
 };
 
 export default CreateCourse;
+
 
