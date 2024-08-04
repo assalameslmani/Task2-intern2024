@@ -1,12 +1,12 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/Home';
-import Dashboard from './components/Dashboard';
+import Register from './components/Register';
 import Login from './components/Login';
-import ManageCourses from './components/ManageCourses';
+import Dashboard from './components/Dashboard';
 import ManageUsers from './components/ManageUsers';
+import ManageCourses from './components/ManageCourses';
 import CreateCourse from './components/CreateCourse';
-import ViewStudents from './components/ViewStudents';
 import MyCourses from './components/MyCourses';
 import TrackProgress from './components/TrackProgress';
 
@@ -15,14 +15,14 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/manage-courses" element={<ManageCourses />} />
-        <Route path="/manage-users" element={<ManageUsers />} />
-        <Route path="/create-course" element={<CreateCourse />} />
-        <Route path="/view-students" element={<ViewStudents />} />
-        <Route path="/my-courses" element={<MyCourses />} />
-        <Route path="/track-progress" element={<TrackProgress />} />
+        <Route path="/manageusers" element={<ManageUsers />} />
+        <Route path="/managecourses" element={<ManageCourses />} />
+        <Route path="/createcourse" element={<CreateCourse />} />
+        <Route path="/mycourses" element={<MyCourses />} />
+        <Route path="/trackprogress" element={<TrackProgress />} />
       </Routes>
     </Router>
   );

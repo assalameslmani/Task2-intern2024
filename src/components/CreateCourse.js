@@ -1,22 +1,24 @@
 import React, { useState } from 'react';
 import { firestore } from '../firebase';
+import { addDoc, collection } from 'firebase/firestore';
 
 const CreateCourse = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [syllabus, setSyllabus] = useState('');
 
-  const handleCreateCourse = async () => {
+  const handleCreateCourse = async (e) => {
+    e.preventDefault();
     try {
-      await firestore.collection('courses').add({
+      await addDoc(collection(firestore, 'courses'), {
         title,
         description,
         syllabus,
+        instructor: 'user_3' // Replace with the actual instructor UID
       });
       setTitle('');
       setDescription('');
       setSyllabus('');
-      alert('Course created successfully!');
     } catch (error) {
       console.error('Error creating course:', error);
     }
@@ -25,24 +27,25 @@ const CreateCourse = () => {
   return (
     <div>
       <h1>Create Course</h1>
-      <input
-        type="text"
-        placeholder="Course Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Course Description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      />
-      <textarea
-        placeholder="Course Syllabus"
-        value={syllabus}
-        onChange={(e) => setSyllabus(e.target.value)}
-      />
-      <button onClick={handleCreateCourse}>Create Course</button>
+      <form onSubmit={handleCreateCourse}>
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="Course Title"
+        />
+        <textarea
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          placeholder="Course Description"
+        ></textarea>
+        <textarea
+          value={syllabus}
+          onChange={(e) => setSyllabus(e.target.value)}
+          placeholder="Course Syllabus"
+        ></textarea>
+        <button type="submit">Create Course</button>
+      </form>
     </div>
   );
 };

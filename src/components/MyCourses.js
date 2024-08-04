@@ -1,41 +1,33 @@
 import React, { useEffect, useState } from 'react';
-import { firestore, auth } from '../firebase';
+import { firestore } from '../firebase';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '../firebase';
 
 const MyCourses = () => {
-  const [user, setUser] = useState(null);
+  const [user] = useAuthState(auth);
   const [courses, setCourses] = useState([]);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const unsubscribe = auth.onAuthStateChanged(async (authUser) => {
-        if (authUser) {
-          setUser(authUser);
-          const userCoursesCollection = await firestore.collection('courses').where('students', 'array-contains', authUser.uid).get();
-          setCourses(userCoursesCollection.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-        }
-      });
-
-      return () => unsubscribe();
+    const fetchCourses = async () => {
+      if (user) {
+        const q = query(collection(firestore, 'courses'), where('studentsEnrolled', 'array-contains', user.uid));
+        const querySnapshot = await getDocs(q);
+        setCourses(querySnapshot.docs.map(doc => doc.data()));
+      }
     };
 
-    fetchUser();
-  }, []);
+    fetchCourses();
+  }, [user]);
 
   return (
     <div>
       <h1>My Courses</h1>
-      {courses.length === 0 ? (
-        <p>You are not enrolled in any courses.</p>
-      ) : (
-        <ul>
-          {courses.map((course) => (
-            <li key={course.id}>
-              <h3>{course.title}</h3>
-              <p>{course.description}</p>
-            </li>
-          ))}
-        </ul>
-      )}
+      <ul>
+        {courses.map((course, index) => (
+          <li key={index}>{course.title}</li>
+        ))}
+      </ul>
     </div>
   );
 };

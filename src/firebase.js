@@ -1,10 +1,7 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
-import { getAnalytics } from 'firebase/analytics';
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyATp3D_mrrThCApSCneLucwl9jWIOyC0jk",
   authDomain: "lmsproject-433ed.firebaseapp.com",
@@ -17,11 +14,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const firestore = getFirestore(app);
 
-// Initialize Firebase Analytics (if you plan to use it)
-// eslint-disable-next-line no-unused-vars
-const analytics = getAnalytics(app);
-
-// Initialize Firebase services
-export const auth = getAuth(app);
-export const firestore = getFirestore(app);
+export { auth, firestore };

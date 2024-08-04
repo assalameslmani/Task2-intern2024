@@ -1,42 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { firestore, auth } from '../firebase';
+import { firestore } from '../firebase';
+import { collection, getDocs } from 'firebase/firestore';
 
 const TrackProgress = () => {
-  const [user, setUser] = useState(null);
-  const [progress, setProgress] = useState([]);
+  const [progressData, setProgressData] = useState([]);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const unsubscribe = auth.onAuthStateChanged(async (authUser) => {
-        if (authUser) {
-          setUser(authUser);
-          const progressCollection = await firestore.collection('progress').where('userId', '==', authUser.uid).get();
-          setProgress(progressCollection.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-        }
-      });
-
-      return () => unsubscribe();
+    const fetchProgressData = async () => {
+      const querySnapshot = await getDocs(collection(firestore, 'progress'));
+      setProgressData(querySnapshot.docs.map(doc => doc.data()));
     };
 
-    fetchUser();
+    fetchProgressData();
   }, []);
 
   return (
     <div>
       <h1>Track Progress</h1>
-      {progress.length === 0 ? (
-        <p>No progress data available.</p>
-      ) : (
-        <ul>
-          {progress.map((item) => (
-            <li key={item.id}>
-              <h3>Course: {item.courseTitle}</h3>
-              <p>Completed Lessons: {item.completedLessons}</p>
-              <p>Progress: {item.progressPercentage}%</p>
-            </li>
-          ))}
-        </ul>
-      )}
+      <ul>
+        {progressData.map((item, index) => (
+          <li key={index}>
+            {item.studentName}: {item.courseTitle} - {item.progress}%
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

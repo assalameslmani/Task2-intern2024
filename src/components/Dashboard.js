@@ -1,32 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { auth, firestore } from '../firebase';
+import React from 'react';
+import { auth } from '../firebase';
+import { useNavigate, Link } from 'react-router-dom';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 const Dashboard = () => {
-  const [user, setUser] = useState(null);
-  const [role, setRole] = useState('');
+  const [user] = useAuthState(auth);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const currentUser = auth.currentUser;
-      if (currentUser) {
-        setUser(currentUser);
-
-        try {
-          const userDoc = await firestore.collection('users').doc(currentUser.uid).get();
-          const userData = userDoc.data();
-          if (userData) {
-            setRole(userData.role);
-          }
-        } catch (error) {
-          console.error('Error fetching user data:', error);
-        }
-      }
-    };
-
-    fetchUser();
-  }, []);
 
   const handleLogout = async () => {
     try {
@@ -37,40 +16,34 @@ const Dashboard = () => {
     }
   };
 
-  const renderAdminLinks = () => (
-    <div>
-      <h2>Admin Dashboard</h2>
-      <ul>
-        <li><button onClick={() => navigate('/manage-courses')}>Manage Courses</button></li>
-        <li><button onClick={() => navigate('/manage-users')}>Manage Users</button></li>
-      </ul>
-    </div>
-  );
-
-  const renderStudentLinks = () => (
-    <div>
-      <h2>Student Dashboard</h2>
-      <ul>
-        <li><button onClick={() => navigate('/my-courses')}>My Courses</button></li>
-        <li><button onClick={() => navigate('/track-progress')}>Track Progress</button></li>
-      </ul>
-    </div>
-  );
-
   return (
     <div>
       <h1>Dashboard</h1>
-      {user && (
-        <div>
-          <h2>Welcome, {user.displayName}</h2>
-          <p>Email: {user.email}</p>
-        </div>
-      )}
-      {role === 'Admin' && renderAdminLinks()}
-      {role === 'Student' && renderStudentLinks()}
       <button onClick={handleLogout}>Logout</button>
+      {user && user.role === 'Admin' && (
+        <>
+          <Link to="/manageusers">Manage Users</Link>
+          <br />
+          <Link to="/managecourses">Manage Courses</Link>
+        </>
+      )}
+      {user && user.role === 'Instructor' && (
+        <>
+          <Link to="/createcourse">Create Course</Link>
+          <br />
+          <Link to="/managecourses">Manage Courses</Link>
+        </>
+      )}
+      {user && user.role === 'Student' && (
+        <>
+          <Link to="/mycourses">My Courses</Link>
+          <br />
+          <Link to="/trackprogress">Track Progress</Link>
+        </>
+      )}
     </div>
   );
 };
 
 export default Dashboard;
+
