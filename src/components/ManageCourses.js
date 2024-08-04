@@ -1,37 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import { firestore } from '../firebase';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebase';
+import '../App.css';
 
 const ManageCourses = () => {
   const [courses, setCourses] = useState([]);
 
   useEffect(() => {
     const fetchCourses = async () => {
-      const coursesCollection = await firestore.collection('courses').get();
-      setCourses(coursesCollection.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+      const coursesCollection = collection(db, 'courses');
+      const courseSnapshot = await getDocs(coursesCollection);
+      const courseList = courseSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setCourses(courseList);
     };
 
     fetchCourses();
   }, []);
 
-  const handleDeleteCourse = async (id) => {
-    try {
-      await firestore.collection('courses').doc(id).delete();
-      setCourses(courses.filter(course => course.id !== id));
-      alert('Course deleted successfully!');
-    } catch (error) {
-      console.error('Error deleting course:', error);
-    }
-  };
-
   return (
-    <div>
+    <div className="manage-courses">
       <h1>Manage Courses</h1>
       <ul>
         {courses.map(course => (
           <li key={course.id}>
-            <h2>{course.title}</h2>
+            <h2>{course.courseName}</h2>
             <p>{course.description}</p>
-            <button onClick={() => handleDeleteCourse(course.id)}>Delete</button>
+            <p><strong>Instructor:</strong> {course.instructor}</p>
+            <p><strong>Duration:</strong> {course.duration}</p>
+            <p><strong>Price:</strong> ${course.price}</p>
+            <p><strong>Enrolled Students:</strong> {course.enrolledStudents}</p>
           </li>
         ))}
       </ul>

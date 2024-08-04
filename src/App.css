@@ -1,38 +1,298 @@
-.App {
+/* General styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+/* Header styles */
+header {
+  background-color: #333;
+  color: white;
+  padding: 10px 20px;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+h1, h2, h3 {
+  margin: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* Button styles */
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Form styles */
+form {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  max-width: 500px;
+  margin: auto;
+}
+
+input, select {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+input[type="submit"] {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover {
+  background-color: #218838;
+}
+
+/* Additional styles */
+.container {
+  padding: 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  padding: 20px;
+  margin: 20px 0;
+}
+
+
+
+form button {
+  padding: 0.75rem;
+  border: none;
+  border-radius: 4px;
+  background-color:#8f2758 ;
+  color: #ffffff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+form button:hover {
+  background-color: #8f2758c5;
+}
+
+/* Error Messages */
+p {
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+/* Dashboard */
+.dashboard-container {
+  padding: 2rem;
+  background-color: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-header {
+  margin-bottom: 1rem;
+}
+
+.dashboard-header h2 {
+  margin: 0;
+}
+
+button.logout {
+  background-color: #e74c3c;
+  color: #fff;
+}
+
+button.logout:hover {
+  background-color: #c0392b;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+}
+
+th, td {
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  text-align: left;
+}
+
+th {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+/* Footer */
+footer {
+  background-color: var(--footer-background);
+  color: #fff;
+  text-align: center;
+  padding: 1rem 0;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+}
+
+.home1{
+  text-align:center;
+  background-color: #8f2758;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+
+a {
+  text-decoration: none; 
+  color:#8f2758; 
+  font-weight: bold; 
+  transition: color 0.3s, text-shadow 0.3s; 
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+
+a:hover,
+a:focus {
+  color:#8f2758; 
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Link active state */
+a:active {
+  color: #8f2758e0 ; 
+  text-shadow: none; 
+}
+
+
+.home-container {
+  text-align: center; 
+  padding: 20px; 
+}
+
+.home-container a {
+  display: inline-block; 
+  margin: 10px 0; 
+  font-size: 18px; 
+  padding: 10px 20px; 
+  border-radius: 5px;
+  border: 2px solid transparent;
+  transition: border-color 0.3s; 
+}
+
+.home-container a:hover {
+  border-color: #8f2758;
+}
+
+
+/* CreateCourse.css */
+.create-course-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.create-course-container h1 {
+  color: #8f2758;
+  margin-bottom: 20px;
+}
+
+.create-course-container form {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+}
+
+.create-course-container input,
+.create-course-container textarea,
+.create-course-container button {
+  margin-bottom: 15px;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+.create-course-container input,
+.create-course-container textarea {
+  width: 100%;
+  font-size: 16px;
+}
+
+.create-course-container textarea {
+  resize: vertical;
+}
+
+.create-course-container button {
+  background-color: #8f2758;
+  color: white;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.create-course-container button:hover {
+  background-color: #73204b;
+}
+
+
+/* MyCourses.css */
+.my-courses {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  margin: 20px auto;
+  max-width: 800px;
+}
+
+.my-courses h1 {
+  color: #8f2758;
+  margin-bottom: 20px;
+}
+
+.my-courses ul {
+  list-style-type: none;
+  padding: 0;
+  width: 100%;
+}
+
+.my-courses li {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.my-courses h2 {
+  color: #8f2758;
+  margin: 0;
+}
+
+.my-courses p {
+  margin: 5px 0;
+}
+
+.my-courses strong {
+  color: #333;
 }

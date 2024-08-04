@@ -1,25 +1,35 @@
-import React from 'react';
-import { auth } from '../firebase';
-import { useNavigate, Link } from 'react-router-dom';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';  // Import Link here
+import { auth, db } from '../firebase';
+import { onAuthStateChanged } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
 
 const Dashboard = () => {
-  const [user] = useAuthState(auth);
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
-    try {
-      await auth.signOut();
-      navigate('/');
-    } catch (error) {
-      console.error('Error logging out:', error);
-    }
-  };
+  useEffect(() => {
+    const fetchUser = async () => {
+      onAuthStateChanged(auth, async (authUser) => {
+        if (authUser) {
+          // Fetch user role from Firestore if needed
+          const userDoc = doc(db, 'users', authUser.uid);
+          const userSnapshot = await getDoc(userDoc);
+          if (userSnapshot.exists()) {
+            setUser({ ...authUser, ...userSnapshot.data() });
+          }
+        } else {
+          navigate('/');
+        }
+      });
+    };
+
+    fetchUser();
+  }, [navigate]);
 
   return (
     <div>
       <h1>Dashboard</h1>
-      <button onClick={handleLogout}>Logout</button>
       {user && user.role === 'Admin' && (
         <>
           <Link to="/manageusers">Manage Users</Link>
@@ -46,4 +56,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-

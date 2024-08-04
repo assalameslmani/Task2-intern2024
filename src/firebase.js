@@ -1,7 +1,8 @@
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 
+// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyATp3D_mrrThCApSCneLucwl9jWIOyC0jk",
   authDomain: "lmsproject-433ed.firebaseapp.com",
@@ -14,7 +15,9 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const firestore = getFirestore(app);
 
-export { auth, firestore };
+// Initialize Firestore and Authentication
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+export { db, auth };

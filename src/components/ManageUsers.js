@@ -1,40 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import { firestore } from '../firebase';
-import { collection, getDocs, updateDoc, doc } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebase'; // Update import to use 'db'
+import '../App.css';
 
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const querySnapshot = await getDocs(collection(firestore, 'users'));
-      setUsers(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+      const usersCollection = collection(db, 'users');
+      const userSnapshot = await getDocs(usersCollection);
+      const userList = userSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setUsers(userList);
     };
 
     fetchUsers();
   }, []);
 
-  const handleRoleChange = async (uid, newRole) => {
-    try {
-      await updateDoc(doc(firestore, 'users', uid), { role: newRole });
-      setUsers(users.map(user => (user.uid === uid ? { ...user, role: newRole } : user)));
-    } catch (error) {
-      console.error('Error updating role:', error);
-    }
-  };
-
   return (
-    <div>
+    <div className="manage-users">
       <h1>Manage Users</h1>
       <ul>
-        {users.map((user, index) => (
-          <li key={index}>
-            {user.displayName} - {user.email} - {user.role}
-            <select value={user.role} onChange={(e) => handleRoleChange(user.uid, e.target.value)}>
-              <option value="Student">Student</option>
-              <option value="Instructor">Instructor</option>
-              <option value="Admin">Admin</option>
-            </select>
+        {users.map(user => (
+          <li key={user.id}>
+            <p><strong>Name:</strong> {user.displayName}</p>
+            <p><strong>Email:</strong> {user.email}</p>
+            <p><strong>Role:</strong> {user.role}</p>
           </li>
         ))}
       </ul>
@@ -43,6 +34,4 @@ const ManageUsers = () => {
 };
 
 export default ManageUsers;
-
-
 

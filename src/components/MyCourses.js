@@ -1,31 +1,40 @@
 import React, { useEffect, useState } from 'react';
-import { firestore } from '../firebase';
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '../firebase';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebase'; // Update import to use 'db'
+import '../App.css';
+
 
 const MyCourses = () => {
-  const [user] = useAuthState(auth);
-  const [courses, setCourses] = useState([]);
+  const [myCourses, setMyCourses] = useState([]);
 
   useEffect(() => {
-    const fetchCourses = async () => {
-      if (user) {
-        const q = query(collection(firestore, 'courses'), where('studentsEnrolled', 'array-contains', user.uid));
-        const querySnapshot = await getDocs(q);
-        setCourses(querySnapshot.docs.map(doc => doc.data()));
-      }
+    const fetchMyCourses = async () => {
+      // Assuming the user ID is available; replace with actual user ID retrieval logic
+      const userId = 'user_1'; // Example user ID
+      const coursesCollection = collection(db, 'courses');
+      const courseSnapshot = await getDocs(coursesCollection);
+      const courseList = courseSnapshot.docs
+        .map(doc => ({ id: doc.id, ...doc.data() }))
+        .filter(course => course.enrolledStudents && course.enrolledStudents.includes(userId)); // Example condition
+
+      setMyCourses(courseList);
     };
 
-    fetchCourses();
-  }, [user]);
+    fetchMyCourses();
+  }, []);
 
   return (
-    <div>
+    <div className="my-courses">
       <h1>My Courses</h1>
       <ul>
-        {courses.map((course, index) => (
-          <li key={index}>{course.title}</li>
+        {myCourses.map(course => (
+          <li key={course.id}>
+            <h2>{course.title}</h2> {/* Assuming the field name is 'title' */}
+            <p>{course.description}</p>
+            <p><strong>Instructor:</strong> {course.instructor}</p>
+            <p><strong>Duration:</strong> {course.duration}</p>
+            <p><strong>Price:</strong> ${course.price}</p>
+          </li>
         ))}
       </ul>
     </div>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { firestore } from '../firebase';
 import { addDoc, collection } from 'firebase/firestore';
+import '../App.css';  // Import the CSS file
 
 const CreateCourse = () => {
   const [title, setTitle] = useState('');
@@ -14,7 +15,7 @@ const CreateCourse = () => {
         title,
         description,
         syllabus,
-        instructor: 'user_3' // Replace with the actual instructor UID
+        instructor: 'user_1' 
       });
       setTitle('');
       setDescription('');
@@ -25,7 +26,7 @@ const CreateCourse = () => {
   };
 
   return (
-    <div>
+    <div className="create-course-container">
       <h1>Create Course</h1>
       <form onSubmit={handleCreateCourse}>
         <input

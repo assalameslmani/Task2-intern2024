@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { firestore } from '../firebase';
+import './App.css';
 
 const ViewStudents = () => {
   const [students, setStudents] = useState([]);
